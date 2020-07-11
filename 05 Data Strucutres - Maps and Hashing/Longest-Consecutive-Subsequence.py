@@ -1,5 +1,5 @@
 '''
-A Naive Solution: Brute Force: O(n^2)
+A Naive Solution: Brute Force: O(n^2). n is the length of the input_list
 '''
 def longest_consecutive_subsequence(input_list):
     longest_streak = -1
@@ -23,7 +23,7 @@ def longest_consecutive_subsequence(input_list):
 '''
 A Solution with HashMap: O(n)
 ---------------------------------------------------------------------------
-1. Creat a dictionary to lookup whether an elements has been visited.
+1. Creat a dictionary to lookup whether an elements is existed(xxx in dict) and visited(dict[xxx]>=0).
 key --> the elements in the list
 value --> the corresponding index [will change to -1 after visiting]
 ---------------------------------------------------------------------------
@@ -46,4 +46,63 @@ e.g. if the input is [100,4,200,1,3,2,5,6], the value of 4,1,3,2,5,6 will change
 	to [index of the beginning element] + [length of lengest subsequence]
 ---------------------------------------------------------------------------
 '''
-
+def longest_consecutive_subsequence(input_list):
+    '''
+    1.
+    create a dictionary storing <element, index>
+    once an element is visited, change the index into -1
+    '''
+    element_dict = {}
+    for index, value in enumerate(input_list):
+        element_dict[value] = index
+    
+    max_length = -1 # the max length of consecutive subsequence
+    starting = -1  # where the subsequence with longest length starts
+    
+    '''
+    2. 
+    For each element in the input_list, first mark it as visited in dictionary
+    and then check in forward and backward direction to visit all consecutive elements of it.
+    '''
+    for index, element in enumerate(input_list):
+        
+        current_length = 1
+        current_starting = index
+        
+        current = element
+        element_dict[element] = -1 # visited
+        
+        # check in forward direction
+        current = element + 1
+        '''
+        key differences:
+            while current in element_dict and element_dict[current] >= 0: O(1)
+            while current in input_list and element_dict[current] >= 0:   O(n)
+        '''
+        while current in element_dict and element_dict[current] >= 0:
+            current_length += 1        # record
+            element_dict[current] = -1 # visited
+            current = current + 1      # move
+        
+        # check in backward direction
+        current = element - 1
+        while current in element_dict and element_dict[current] >= 0:
+            current_length += 1        # record
+            current_starting = element_dict[current] # record
+            element_dict[current] = -1 # visited
+            current = current - 1      # move
+        
+        if current_length >= max_length:
+            if current_length == max_length and current_starting > starting:
+                continue
+            # update when: 1. longer, 2. length is the same but start earlier
+            starting = current_starting
+            max_length = current_length
+    '''
+    3. 
+    return a new list starting 
+	from [index of the beginning element] 
+	to [index of the beginning element] + [length of lengest subsequence]
+    '''
+    start_element = input_list[starting]
+    return [i for i in range(start_element, start_element + max_length)]
