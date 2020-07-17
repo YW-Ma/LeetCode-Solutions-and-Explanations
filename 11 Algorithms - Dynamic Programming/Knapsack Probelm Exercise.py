@@ -77,10 +77,38 @@ def knapsack_recursive(capacity, items, index):
 
 '''
 Dynamic Programming Approach (Brute Force)
-
+------------------------------------
+- capacity : 0  1  2  3  4  5  ...
+- max_value: 0  0  0  0  0  0 
+------------------------------------
+lookup table 查找表：储存中间结果 以进行重用
+一开始，查找表value都是0
+随后，一件件取出物体，按照下列规则更新各个能容纳它的capacity的value：
+规则：如果此物体的价值 + 剩余capacity在表中的value > 原value，则更新为新value。
 '''
 
-
+# DP Solution
+# Get the maximum total value ($) of items that can be accommodated into the given knapsack
+def knapsack_max_value(knapsack_max_weight, items):
+    """
+    Get the maximum value of the knapsack.
+    """
+    # Initialize a lookup table to store the maximum value for each capacity
+    lookup_table = [0 for _ in range(knapsack_max_weight + 1)]
+    
+    # Iterate down the given item-list
+    for item in items:
+        
+        # The "capacity" represents amount of remaning capacity of knapsack at a given moment
+        for capacity in reversed(range(knapsack_max_weight + 1)): 
+            # 关键在于reversed() 如果不reverse，会出现把同一个物体使用多次的情况
+            
+            if item.weight <= capacity:
+                valueA = lookup_table[capacity]
+                valueB = lookup_table[capacity - item.weight] + item.value
+                lookup_table[capacity] = max(valueA, valueB)
+    
+    return lookup_table[knapsack_max_weight]
 
 # Test:
 
@@ -101,3 +129,6 @@ for test in tests:
     
     print(knapsack_max_value_brute_force(**test['input']))
     assert test['correct_output'] == knapsack_max_value_brute_force(**test['input'])  
+    
+    print(knapsack_max_value(**test['input']))
+    assert test['correct_output'] == knapsack_max_value(**test['input'])  
