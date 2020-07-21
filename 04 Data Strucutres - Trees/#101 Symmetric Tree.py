@@ -27,6 +27,7 @@ class Solution:
             elif t1 is not None and t2 is None:
                 return False
             # elif t1 is not None and t2 is not None:
+            # Check if [the root of these two subtrees is the same] && [their direct children is symmetric].
             return (t1.val == t2.val) and (isMirror(t1.left, t2.right)) and (isMirror(t1.right, t2.left))
         
         return isMirror(t1, t2)
@@ -47,6 +48,7 @@ class Solution:
         q.insert(0,t1)
         q.insert(0,t2)
         while len(q) > 0:
+            # pop a pair of nodes
             t1 = q.pop()
             t2 = q.pop()
             if t1 is None and t2 is None:
@@ -54,9 +56,12 @@ class Solution:
             elif t1 is None or t2 is None:
                 return False
             elif t1.val != t2.val:
-                return False
+                return False # check if t1 and t2 is the same.
+            # leave the symmetric checking to a future loop
+            # [L.L, R.R] pair
             q.insert(0,t1.left)
             q.insert(0,t2.right)
+            # [L.R, R.L] pair
             q.insert(0,t1.right)
             q.insert(0,t2.left)
         
