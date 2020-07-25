@@ -51,6 +51,23 @@ class Heap:
         then, we decrease the next_index and down-heapify the heap from the root.
         during the down-heapify, we need to check if an index is valid before we use it.
         '''
+        
+    def _up_heapify(self):
+        '''
+        An internal function.
+        From the newly added node, 
+        switch the node with its parent until the parent is smaller than the node.
+        or the node doesn't have a parent. (i.e. index < 1)
+        '''
+    
+    def _down_heapify(self):
+        '''
+        An internal function.
+        From the root,
+        switch the node with its smaller child until the smaller child is larger than the node.
+        or the node doesn't have a child.
+        Please valid the indices of both children before visiting them in the CBT.
+        '''
 
 
 
