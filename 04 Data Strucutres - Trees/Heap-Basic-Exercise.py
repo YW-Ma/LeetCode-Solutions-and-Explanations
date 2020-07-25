@@ -27,8 +27,30 @@ Use an array to represent a heap, and implement:
 '''
 
 
-
-
+class Heap:
+    def __init__(self, initial_size):
+        '''
+        create the CBT container for the heap using initial_size
+        initialize the next_index with 0
+        '''
+        self.cbt = [0 for _ in range(initial_size)]
+        self.next_index = 0
+        
+    def insert(self, data):
+        '''
+        insert the data into the cbt,
+        up-heapify,
+        update next_index,
+        and then expand the cbt if next_index exceed the size.
+        '''
+    
+    def remove(self):
+        '''
+        we want to remove the root value
+        we can only remove the data in the next_index-1, so we need to swith the root and the leaf node at the next_index-1
+        then, we decrease the next_index and down-heapify the heap from the root.
+        during the down-heapify, we need to check if an index is valid before we use it.
+        '''
 
 
 
