@@ -30,6 +30,11 @@ unvisited要把所有尚未访问的节点都添加进去。
 .neighbours是一个defaultdict，以节点为key，以neighbours的列表为value
 .distances是一个dict，以一个节点对为key('A', 'B')，以一个距离值为value
 
+4. 出错的地方：
+在循环中，每次寻找的是“未访问节点中到达source最近的点”。
+这个点可能在之前的循环中被更新过（某个被访问节点的邻居）
+所以不再是“graph.distances[(node, source)]”里面的值了，不可以用它。应该用result[node]
+distances的值，只能用于需要“结构信息”的时候，比如current_node到相邻node的距离。
 '''
 import sys
 
